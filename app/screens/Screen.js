@@ -1,5 +1,4 @@
 import { ImageBackground, StyleSheet } from "react-native";
-import React from "react";
 // linear gradiant expo
 import { LinearGradient } from "expo-linear-gradient";
 
