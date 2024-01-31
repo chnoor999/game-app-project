@@ -1,19 +1,14 @@
-import { ImageBackground, StyleSheet } from "react-native";
-// linear gradiant expo
-import { LinearGradient } from "expo-linear-gradient";
+import { SafeAreaView, StyleSheet } from "react-native";
+// expo constant
+import Constants from "expo-constants";
 
 export default function Screen({ children }) {
-  return (
-    <LinearGradient colors={["#1e6091", "#d9ed92"]} style={{ flex: 1 }}>
-      <ImageBackground
-        source={require("../assets/images/dice2.jpg")}
-        style={{ flex: 1 }}
-        imageStyle={{ opacity: 0.1 }}
-      >
-        {children}
-      </ImageBackground>
-    </LinearGradient>
-  );
+  return <SafeAreaView style={styles.container}>{children}</SafeAreaView>;
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingTop: Constants.statusBarHeight,
+  },
+});

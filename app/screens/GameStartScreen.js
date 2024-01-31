@@ -1,52 +1,65 @@
-import { StyleSheet, TextInput, View } from "react-native";
-import React from "react";
-// components
+import { StyleSheet, Text, TextInput, View } from "react-native";
+import React, { useState } from "react";
+// screens
+import BackgroundScreen from "./BackgroundScreen";
+// constant color
+import Colors from "../config/Colors";
+// component
+import Card from "../components/Card";
+import Title from "../components/Title";
+import SubTitle from "../components/SubTitle";
 import MyButton from "../components/MyButton";
 
 export default function GameStartScreen() {
+  // user number state
+  const [userNumber,setuserNumber] = useState ()
+
   return (
-    <View style={styles.container}>
-      <TextInput
-        style={styles.myTextInput}
-        maxLength={2}
-        keyboardType="numeric"
-        autoCapitalize="none"
-        autoCorrect={false}
-        placeholder="#"
-        placeholderTextColor={"#34a0a471"}
-      />
-      <View style={styles.btnsContainer}>
-        <View style={styles.btnContainer}>
-          <MyButton>Remove</MyButton>
-        </View>
-        <View style={styles.btnContainer}>
-          <MyButton>Confirm</MyButton>
-        </View>
+    <BackgroundScreen>
+      <View style={styles.container}>
+        <Title>Guess My Number</Title>
+        <Card>
+          <View style={styles.cardContainer}>
+            <SubTitle>Enter a Number</SubTitle>
+            <TextInput
+              style={styles.input}
+              keyboardType="numeric"
+              maxLength={2}
+              autoCapitalize="none"
+            />
+            <View style={styles.btnsContainer}>
+              <View style={styles.btnContainer}>
+                <MyButton>Reset</MyButton>
+              </View>
+              <View style={styles.btnContainer}>
+                <MyButton>Confirm</MyButton>
+              </View>
+            </View>
+          </View>
+        </Card>
       </View>
-    </View>
+    </BackgroundScreen>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 80,
-    marginHorizontal: 10,
-    padding: 20,
-    backgroundColor: "#184e77",
-    borderRadius: 8,
-    alignItems: "center",
-    gap: 10,
-    elevation: 5,
+    paddingHorizontal: 20,
+    paddingTop: 35,
+    gap: 35,
   },
-  myTextInput: {
-    fontSize: 25,
-    color: "#d9ed92",
-    borderBottomWidth: 2,
-    borderBottomWidth: 1,
-    borderColor: "#d9ed92",
-    width: 50,
+  cardContainer: {
+    gap: 10,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  input: {
+    borderWidth: 2,
+    borderColor: Colors.yellow500,
+    fontSize: 30,
+    color: Colors.yellow500,
     textAlign: "center",
-    fontWeight: "bold",
+    width: 80,
   },
   btnsContainer: {
     flexDirection: "row",
