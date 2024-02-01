@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TextInput, View } from "react-native";
+import { Alert, StyleSheet, Text, TextInput, View } from "react-native";
 import React, { useState } from "react";
 // screens
 import BackgroundScreen from "./BackgroundScreen";
@@ -10,9 +10,28 @@ import Title from "../components/Title";
 import SubTitle from "../components/SubTitle";
 import MyButton from "../components/MyButton";
 
-export default function GameStartScreen() {
+export default function GameStartScreen({ navigation }) {
   // user number state
-  const [userNumber,setuserNumber] = useState ()
+  const [userNumber, setuserNumber] = useState();
+
+  // on reset function
+  const onReset = () => {
+    setuserNumber(null);
+  };
+
+  // on confirm function
+  const onConfirm = () => {
+    const num = parseInt(userNumber);
+    if (isNaN(num) || num <= 0 || num > 99) {
+      Alert.alert(
+        "Invalid Number!",
+        "Number has to be a number between 1 and 99. ",
+        [{ text: "Okay", style: "destructive" }]
+      );
+    } else {
+      navigation.navigate("gameScreen", { userNumber });
+    }
+  };
 
   return (
     <BackgroundScreen>
@@ -26,13 +45,15 @@ export default function GameStartScreen() {
               keyboardType="numeric"
               maxLength={2}
               autoCapitalize="none"
+              value={userNumber}
+              onChangeText={(text) => setuserNumber(text)}
             />
             <View style={styles.btnsContainer}>
               <View style={styles.btnContainer}>
-                <MyButton>Reset</MyButton>
+                <MyButton onPress={onReset}>Reset</MyButton>
               </View>
               <View style={styles.btnContainer}>
-                <MyButton>Confirm</MyButton>
+                <MyButton onPress={onConfirm}>Confirm</MyButton>
               </View>
             </View>
           </View>

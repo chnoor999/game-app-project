@@ -7,6 +7,7 @@ const Stack = createNativeStackNavigator();
 import { useFonts } from "expo-font";
 //screens
 import GameStartScreen from "./app/screens/GameStartScreen";
+import GameScreen from "./app/screens/GameScreen";
 import BackgroundScreen from "./app/screens/BackgroundScreen";
 
 export default function App() {
@@ -22,9 +23,11 @@ export default function App() {
         <Stack.Navigator
           screenOptions={{
             headerShown: false,
+            animation: "fade_from_bottom",
           }}
         >
           <Stack.Screen name="gameStartScreen" component={GameStartScreen} />
+          <Stack.Screen name="gameScreen" component={GameScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     ) : (

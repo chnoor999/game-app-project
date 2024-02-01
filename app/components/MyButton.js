@@ -2,9 +2,13 @@ import { StyleSheet, Text, TouchableOpacity } from "react-native";
 // constant color
 import Colors from "../config/Colors";
 
-export default function MyButton({ children }) {
+export default function MyButton({ children, onPress }) {
   return (
-    <TouchableOpacity activeOpacity={0.9} style={styles.btnContainer}>
+    <TouchableOpacity
+      activeOpacity={0.8}
+      style={styles.btnContainer}
+      onPress={onPress}
+    >
       <Text style={styles.btnText}>{children}</Text>
     </TouchableOpacity>
   );
