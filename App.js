@@ -9,6 +9,7 @@ import { useFonts } from "expo-font";
 import GameStartScreen from "./app/screens/GameStartScreen";
 import GameScreen from "./app/screens/GameScreen";
 import BackgroundScreen from "./app/screens/BackgroundScreen";
+import GameOverScreen from "./app/screens/GameOverScreen";
 
 export default function App() {
   // custom fonts stuff
@@ -28,6 +29,7 @@ export default function App() {
         >
           <Stack.Screen name="gameStartScreen" component={GameStartScreen} />
           <Stack.Screen name="gameScreen" component={GameScreen} />
+          <Stack.Screen name="gameOverScreen" component={GameOverScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     ) : (
