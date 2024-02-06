@@ -1,4 +1,6 @@
 import { Image, StyleSheet, View } from "react-native";
+//navigation
+import { useNavigation, useRoute } from "@react-navigation/native";
 // screens
 import BackgroundScreen from "./BackgroundScreen";
 import Title from "../components/Title";
@@ -6,7 +8,19 @@ import MyText from "../components/MyText";
 import MyBoldText from "../components/MyBoldText";
 import MyButton from "../components/MyButton";
 
-export default function GameOverScreen({ navigation }) {
+export default function GameOverScreen({ setUserNumber }) {
+  // navigation
+  const navigation = useNavigation();
+  const route = useRoute();
+
+  const { userGuess } = route.params;
+  const { totalGuessLength } = route.params;
+
+  // re start game function
+  const handleRestartGame = () => {
+    navigation.navigate("gameStartScreen");
+    setUserNumber(null);
+  };
   return (
     <BackgroundScreen>
       <View style={styles.container}>
@@ -18,12 +32,10 @@ export default function GameOverScreen({ navigation }) {
           />
         </View>
         <MyText>
-          Your phone needed <MyBoldText>x</MyBoldText> rounds to guess the
-          number <MyBoldText>y</MyBoldText>
+          Your phone needed <MyBoldText>{totalGuessLength}</MyBoldText> rounds
+          to guess the number <MyBoldText>{userGuess}</MyBoldText>
         </MyText>
-        <MyButton onPress={() => navigation.navigate("gameStartScreen")}>
-          Start New Game
-        </MyButton>
+        <MyButton onPress={handleRestartGame}>Start New Game</MyButton>
       </View>
     </BackgroundScreen>
   );

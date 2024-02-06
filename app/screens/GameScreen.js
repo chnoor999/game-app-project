@@ -1,5 +1,7 @@
-import { Alert, StyleSheet, View } from "react-native";
+import { Alert, BackHandler, FlatList, StyleSheet, View } from "react-native";
 import React, { useEffect, useState } from "react";
+//navigation
+import { useNavigation, useRoute } from "@react-navigation/native";
 // isons
 import { Ionicons } from "@expo/vector-icons";
 // screens
@@ -9,8 +11,25 @@ import Card from "../components/Card";
 import SubTitle from "../components/SubTitle";
 import MyButton from "../components/MyButton";
 import GuessedNumber from "../components/GuessedNumber";
+import GuessList from "../components/GuessList";
 
-export default function GameScreen({ route, navigation }) {
+export default function GameScreen() {
+  // navigation
+  const navigation = useNavigation();
+  const route = useRoute();
+
+  // prevent going back
+  useEffect(() => {
+    const backAction = () => {
+      return true;
+    };
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+    return () => backHandler.remove();
+  }, []);
+
   // intial guesses number
   const [minGuess, setMinGuess] = useState(1);
   const [maxGuess, setMaxGuess] = useState(99);
@@ -30,10 +49,13 @@ export default function GameScreen({ route, navigation }) {
   const intialguess = guessRndNumber(minGuess, maxGuess, userGuess);
   // guess number state
   const [guessedNumber, setGuessedNumber] = useState(intialguess);
+  // total guess
+  const [totalGuess, setTotalGuess] = useState([guessedNumber]);
+  //length of total guess
+  const totalGuessLength = totalGuess.length;
 
   // function for button to guess a number high or low
   const onGuess = (whichguess) => {
-    console.log("pressed");
     //whichguess is high or low
     if (
       (whichguess === "low" && guessedNumber < userGuess) ||
@@ -60,16 +82,19 @@ export default function GameScreen({ route, navigation }) {
   useEffect(() => {
     // this condition do not change the intial guess on first render
     if (minGuess != 1 || maxGuess != 99) {
-      const rndNumberHigh = guessRndNumber(minGuess, maxGuess, guessedNumber);
-      setGuessedNumber(rndNumberHigh);
-      console.log("useeffect");
+      const rndNumber = guessRndNumber(minGuess, maxGuess, guessedNumber);
+      setGuessedNumber(rndNumber);
+      setTotalGuess((preGuess) => [rndNumber, ...preGuess]);
     }
   }, [minGuess, maxGuess]);
 
   // game over stuff
   useEffect(() => {
     if (userGuess == guessedNumber) {
-      navigation.navigate("gameOverScreen");
+      navigation.navigate("gameOverScreen", {
+        userGuess,
+        totalGuessLength,
+      });
     }
   }, [guessedNumber]);
   return (
@@ -94,6 +119,19 @@ export default function GameScreen({ route, navigation }) {
             </View>
           </View>
         </Card>
+        <View style={styles.listContainer}>
+          <FlatList
+            data={totalGuess}
+            renderItem={({ item, index }) => {
+              return (
+                <GuessList
+                  ListGuess={item}
+                  listNumber={totalGuessLength - index}
+                />
+              );
+            }}
+          />
+        </View>
       </View>
     </BackgroundScreen>
   );
@@ -102,8 +140,9 @@ export default function GameScreen({ route, navigation }) {
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 20,
-    paddingTop: 35,
+    marginVertical: 35,
     gap: 35,
+    flex: 1,
   },
   cardContainer: {
     gap: 10,
@@ -114,6 +153,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   btnContainer: {
+    flex: 1,
+  },
+  listContainer: {
     flex: 1,
   },
 });

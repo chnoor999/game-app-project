@@ -1,4 +1,5 @@
-import { StyleSheet } from "react-native";
+import { Alert, BackHandler, StyleSheet } from "react-native";
+import { useEffect, useState } from "react";
 // navigation
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -12,6 +13,29 @@ import BackgroundScreen from "./app/screens/BackgroundScreen";
 import GameOverScreen from "./app/screens/GameOverScreen";
 
 export default function App() {
+  // userNumber
+  const [userNumber, setUserNumber] = useState();
+
+  // prevent going back
+  useEffect(() => {
+    const backAction = () => {
+      Alert.alert("Exit App", "Are you sure you want to exit", [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Exit",
+          style: "destructive",
+          onPress: () => BackHandler.exitApp(),
+        },
+      ]);
+      return true;
+    };
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+    return () => backHandler.remove();
+  }, []);
+
   // custom fonts stuff
   const [fontLoading] = useFonts({
     "openSans-Bold": require("./app/assets/fonts/OpenSans-Bold.ttf"),
@@ -27,9 +51,21 @@ export default function App() {
         }}
         initialRouteName="gameStartScreen"
       >
-        <Stack.Screen name="gameStartScreen" component={GameStartScreen} />
-        <Stack.Screen name="gameScreen" component={GameScreen} />
-        <Stack.Screen name="gameOverScreen" component={GameOverScreen} />
+        {/* screen One .............................................. */}
+        <Stack.Screen name="gameStartScreen">
+          {() => (
+            <GameStartScreen
+              setUserNumber={setUserNumber}
+              userNumber={userNumber}
+            />
+          )}
+        </Stack.Screen>
+        {/* screen two........................................................ */}
+        <Stack.Screen name="gameScreen">{() => <GameScreen />}</Stack.Screen>
+        {/* screen three ............................................................ */}
+        <Stack.Screen name="gameOverScreen">
+          {() => <GameOverScreen setUserNumber={setUserNumber} />}
+        </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   ) : (
