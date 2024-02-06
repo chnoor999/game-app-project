@@ -1,4 +1,4 @@
-import { Alert, StyleSheet, Text, TextInput, View } from "react-native";
+import { Alert, StyleSheet, TextInput, View } from "react-native";
 import React, { useState } from "react";
 // screens
 import BackgroundScreen from "./BackgroundScreen";

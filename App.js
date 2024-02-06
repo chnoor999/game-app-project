@@ -18,25 +18,24 @@ export default function App() {
     "openSans-Regular": require("./app/assets/fonts/OpenSans-Regular.ttf"),
   });
 
-  {
-    return fontLoading ? (
-      <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{
-            headerShown: false,
-            animation: "fade_from_bottom",
-          }}
-        >
-          <Stack.Screen name="gameStartScreen" component={GameStartScreen} />
-          <Stack.Screen name="gameScreen" component={GameScreen} />
-          <Stack.Screen name="gameOverScreen" component={GameOverScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    ) : (
-      // splash screen till fontloading
-      <BackgroundScreen />
-    );
-  }
+  return fontLoading ? (
+    <NavigationContainer>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+          animation: "fade_from_bottom",
+        }}
+        initialRouteName="gameStartScreen"
+      >
+        <Stack.Screen name="gameStartScreen" component={GameStartScreen} />
+        <Stack.Screen name="gameScreen" component={GameScreen} />
+        <Stack.Screen name="gameOverScreen" component={GameOverScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  ) : (
+    // splash screen till fontloading
+    <BackgroundScreen />
+  );
 }
 
 const styles = StyleSheet.create({});

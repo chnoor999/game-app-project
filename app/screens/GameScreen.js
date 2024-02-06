@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Alert, StyleSheet, View } from "react-native";
 import React, { useEffect, useState } from "react";
 // isons
 import { Ionicons } from "@expo/vector-icons";
@@ -14,8 +14,6 @@ export default function GameScreen({ route, navigation }) {
   // intial guesses number
   const [minGuess, setMinGuess] = useState(1);
   const [maxGuess, setMaxGuess] = useState(99);
-  // let minGuess = 1;
-  // let maxGuess = 99;
 
   // guess number function
   const guessRndNumber = (min, max, number) => {
@@ -41,38 +39,39 @@ export default function GameScreen({ route, navigation }) {
       (whichguess === "low" && guessedNumber < userGuess) ||
       (whichguess === "high" && guessedNumber > userGuess)
     ) {
-      alert();
+      Alert.alert("Don't lie!", "You know this is wrong...", [
+        {
+          text: "Sorry!",
+          style: "cancel",
+        },
+      ]);
       return;
     }
     //condition for low
     else if (whichguess === "low") {
-      // maxGuess = guessedNumber;
       setMaxGuess(guessedNumber - 1);
     }
     // condition for high
     else if (whichguess === "high") {
-      // minGuess = guessedNumber;
       setMinGuess(guessedNumber + 1);
     }
   };
 
   useEffect(() => {
-    const rndNumberHigh = guessRndNumber(minGuess, maxGuess, guessedNumber);
-    setGuessedNumber(rndNumberHigh);
-  }, [minGuess]);
-  useEffect(() => {
-    const rndNumberHigh = guessRndNumber(minGuess, maxGuess, guessedNumber);
-    setGuessedNumber(rndNumberHigh);
-  }, [maxGuess]);
+    // this condition do not change the intial guess on first render
+    if (minGuess != 1 || maxGuess != 99) {
+      const rndNumberHigh = guessRndNumber(minGuess, maxGuess, guessedNumber);
+      setGuessedNumber(rndNumberHigh);
+      console.log("useeffect");
+    }
+  }, [minGuess, maxGuess]);
 
   // game over stuff
   useEffect(() => {
     if (userGuess == guessedNumber) {
       navigation.navigate("gameOverScreen");
-      console.log("win");
     }
   }, [guessedNumber]);
-  console.log(minGuess, maxGuess, guessedNumber);
   return (
     <BackgroundScreen>
       <View style={styles.container}>
