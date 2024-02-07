@@ -1,4 +1,4 @@
-import { Alert, BackHandler, StyleSheet } from "react-native";
+import { Alert, BackHandler } from "react-native";
 import { useEffect, useState } from "react";
 // navigation
 import { NavigationContainer } from "@react-navigation/native";
@@ -13,10 +13,10 @@ import BackgroundScreen from "./app/screens/BackgroundScreen";
 import GameOverScreen from "./app/screens/GameOverScreen";
 
 export default function App() {
-  // userNumber
+  // userNumber state
   const [userNumber, setUserNumber] = useState();
 
-  // prevent going back
+  // prevent to going back
   useEffect(() => {
     const backAction = () => {
       Alert.alert("Exit App", "Are you sure you want to exit", [
@@ -73,5 +73,3 @@ export default function App() {
     <BackgroundScreen />
   );
 }
-
-const styles = StyleSheet.create({});

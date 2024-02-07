@@ -1,24 +1,19 @@
 import { Alert, StyleSheet, TextInput, View } from "react-native";
-import React, { useState } from "react";
 //navigation
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 // screens
 import BackgroundScreen from "./BackgroundScreen";
 // constant color
 import Colors from "../config/Colors";
-// component
+// components
 import Card from "../components/Card";
 import Title from "../components/Title";
 import SubTitle from "../components/SubTitle";
 import MyButton from "../components/MyButton";
 
-export default function GameStartScreen({setUserNumber,userNumber}) {
+export default function GameStartScreen({ setUserNumber, userNumber }) {
   // navigation
   const navigation = useNavigation();
-  const route = useRoute();
-
-  // user number state
-  // const [userNumber, setuserNumber] = useState();
 
   // on reset function
   const onReset = () => {
@@ -53,6 +48,8 @@ export default function GameStartScreen({setUserNumber,userNumber}) {
               autoCapitalize="none"
               value={userNumber}
               onChangeText={(text) => setUserNumber(text)}
+              onSubmitEditing={onConfirm}
+              returnKeyType="done"
             />
             <View style={styles.btnsContainer}>
               <View style={styles.btnContainer}>

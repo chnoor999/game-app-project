@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+// constant colors
 import Colors from "../config/Colors";
 
 export default function GuessList({ listNumber, ListGuess }) {
