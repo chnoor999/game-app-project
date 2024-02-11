@@ -12,15 +12,34 @@ import SubTitle from "../components/SubTitle";
 import MyButton from "../components/MyButton";
 import GuessedNumber from "../components/GuessedNumber";
 import GuessList from "../components/GuessList";
+import Screen from "./Screen";
 
-export default function GameScreen() {
-  // navigation
-  const navigation = useNavigation();
-  const route = useRoute();
-
-  // prevent going back
+export default function GameScreen({ setUserNumber }) {
+  // prevent to going back give alert that you want to exit or restart
   useEffect(() => {
     const backAction = () => {
+      Alert.alert(
+        "Exit or Restart?",
+        "Do you want to exit the app or restart the game?",
+        [
+          { text: "Cancel", style: "cancel" },
+          {
+            text: "Exit",
+            onPress: () => {
+              BackHandler.exitApp();
+              navigation.navigate("gameStartScreen");
+              setUserNumber(null);
+            },
+          },
+          {
+            text: "Restart",
+            onPress: () => {
+              navigation.navigate("gameStartScreen");
+              setUserNumber(null);
+            },
+          },
+        ]
+      );
       return true;
     };
     const backHandler = BackHandler.addEventListener(
@@ -29,6 +48,10 @@ export default function GameScreen() {
     );
     return () => backHandler.remove();
   }, []);
+
+  // navigation
+  const navigation = useNavigation();
+  const route = useRoute();
 
   // intial guesses number
   const [minGuess, setMinGuess] = useState(1);
@@ -56,6 +79,9 @@ export default function GameScreen() {
 
   // function for button to guess a number high or low
   const onGuess = (whichguess) => {
+    if (userGuess == guessedNumber) {
+      return;
+    }
     //whichguess is high or low
     if (
       (whichguess === "low" && guessedNumber < userGuess) ||
@@ -99,7 +125,7 @@ export default function GameScreen() {
   }, [guessedNumber]);
   return (
     <BackgroundScreen>
-      <View style={styles.container}>
+      <Screen>
         <Title>Opponent's Guess</Title>
         <Card>
           <View style={styles.cardContainer}>
@@ -132,18 +158,12 @@ export default function GameScreen() {
             }}
           />
         </View>
-      </View>
+      </Screen>
     </BackgroundScreen>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 20,
-    marginVertical: 35,
-    gap: 35,
-    flex: 1,
-  },
   cardContainer: {
     gap: 10,
     alignItems: "center",
@@ -151,6 +171,7 @@ const styles = StyleSheet.create({
   },
   btnsContainer: {
     flexDirection: "row",
+    gap:10
   },
   btnContainer: {
     flex: 1,

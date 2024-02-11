@@ -1,5 +1,4 @@
-import { Alert, BackHandler } from "react-native";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 // navigation
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -15,26 +14,6 @@ import GameOverScreen from "./app/screens/GameOverScreen";
 export default function App() {
   // userNumber state
   const [userNumber, setUserNumber] = useState();
-
-  // prevent to going back
-  useEffect(() => {
-    const backAction = () => {
-      Alert.alert("Exit App", "Are you sure you want to exit", [
-        { text: "Cancel", style: "cancel" },
-        {
-          text: "Exit",
-          style: "destructive",
-          onPress: () => BackHandler.exitApp(),
-        },
-      ]);
-      return true;
-    };
-    const backHandler = BackHandler.addEventListener(
-      "hardwareBackPress",
-      backAction
-    );
-    return () => backHandler.remove();
-  }, []);
 
   // custom fonts stuff
   const [fontLoading] = useFonts({
@@ -61,7 +40,9 @@ export default function App() {
           )}
         </Stack.Screen>
         {/* screen two........................................................ */}
-        <Stack.Screen name="gameScreen">{() => <GameScreen />}</Stack.Screen>
+        <Stack.Screen name="gameScreen">
+          {() => <GameScreen setUserNumber={setUserNumber} />}
+        </Stack.Screen>
         {/* screen three ............................................................ */}
         <Stack.Screen name="gameOverScreen">
           {() => <GameOverScreen setUserNumber={setUserNumber} />}

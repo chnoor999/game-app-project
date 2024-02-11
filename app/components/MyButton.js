@@ -26,6 +26,9 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.5,
+    maxWidth:500,
+    width:"100%",
+    alignSelf:"center"
   },
   btnText: {
     textAlign: "center",

@@ -16,5 +16,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowRadius: 4,
     shadowOffset: { width: 0, height: 0 },
+    width:"100%",
+    maxWidth:500,
+    alignSelf:"center"
   },
 });

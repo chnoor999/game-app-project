@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Dimensions, StyleSheet, Text, View } from "react-native";
 // constant colors
 import Colors from "../config/Colors";
 
@@ -11,11 +11,14 @@ export default function GuessList({ listNumber, ListGuess }) {
   );
 }
 
+// width of mobile window
+const windowWidth = Dimensions.get("window").width;
+
 const styles = StyleSheet.create({
   container: {
     borderRadius: 50,
     paddingHorizontal: 15,
-    paddingVertical: 12,
+    paddingVertical: windowWidth < 380 ? 10 : 12,
     backgroundColor: Colors.yellow500,
     flexDirection: "row",
     justifyContent: "space-between",
@@ -25,5 +28,8 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     shadowOpacity: 0.5,
     marginVertical: 10,
+    width:"100%",
+    maxWidth:500,
+    alignSelf:'center'
   },
 });

@@ -1,4 +1,10 @@
-import { Image, StyleSheet, View } from "react-native";
+import {
+  Dimensions,
+  Image,
+  StyleSheet,
+  View,
+  useWindowDimensions,
+} from "react-native";
 //navigation
 import { useNavigation, useRoute } from "@react-navigation/native";
 // screens
@@ -7,6 +13,10 @@ import Title from "../components/Title";
 import MyText from "../components/MyText";
 import MyBoldText from "../components/MyBoldText";
 import MyButton from "../components/MyButton";
+import Screen from "./Screen";
+
+// width of mobile window
+const windowWidth = Dimensions.get("window").width;
 
 export default function GameOverScreen({ setUserNumber }) {
   // navigation
@@ -21,11 +31,37 @@ export default function GameOverScreen({ setUserNumber }) {
     navigation.navigate("gameStartScreen");
     setUserNumber(null);
   };
+
+  // mobile width
+  const { width } = useWindowDimensions();
+
   return (
     <BackgroundScreen>
-      <View style={styles.container}>
+      <Screen style={{}}>
         <Title>Game Over!</Title>
-        <View style={styles.imageContainer}>
+        <View
+          style={[
+            styles.imageContainer,
+            {
+              width:
+                windowWidth < 380
+                  ? width > 500
+                    ? 150
+                    : 280
+                  : width > 500
+                  ? 170
+                  : 350,
+              height:
+                windowWidth < 380
+                  ? width > 500
+                    ? 150
+                    : 280
+                  : width > 500
+                  ? 170
+                  : 350,
+            },
+          ]}
+        >
           <Image
             style={styles.image}
             source={require("../assets/images/success.png")}
@@ -36,23 +72,16 @@ export default function GameOverScreen({ setUserNumber }) {
           to guess the number <MyBoldText>{userGuess}</MyBoldText>
         </MyText>
         <MyButton onPress={handleRestartGame}>Start New Game</MyButton>
-      </View>
+      </Screen>
     </BackgroundScreen>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 20,
-    paddingTop: 35,
-    gap: 35,
-  },
   imageContainer: {
-    width: 350,
-    height: 350,
     borderRadius: 300,
-    alignSelf: "center",
     borderWidth: 2,
+    alignSelf: "center",
   },
   image: {
     width: "100%",

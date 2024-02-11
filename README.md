@@ -23,5 +23,10 @@ Linear Gradient:
 Linear gradient is applied to the screens to add a visually appealing background effect.
 
 Back Handler:
-The app implements a back handler to prevent accidental app exits.
-If the user attempts to navigate back, an alert prompts them to confirm if they want to exit the app or cancel the action.
+Implements a back handler to prevent accidental app exits.
+When the user attempts to navigate back, an alert prompts them to confirm if they want to exit the app or cancel the action.
+When the game starts, the alert changes to confirm if the user wants to exit the app or restart the game.
+
+Responsiveness:
+Different styles are applied for large and small mobile screens.
+Different styling is applied for landscape and portrait modes.
