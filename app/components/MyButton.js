@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import { Dimensions, StyleSheet, Text, TouchableOpacity } from "react-native";
 // constant color
 import Colors from "../config/Colors";
 
@@ -14,6 +14,9 @@ export default function MyButton({ children, onPress }) {
   );
 }
 
+// width of mobile window
+const windowWidth = Dimensions.get("window").width;
+
 const styles = StyleSheet.create({
   btnContainer: {
     backgroundColor: Colors.blue400,
@@ -26,9 +29,9 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.5,
-    maxWidth:500,
-    width:"100%",
-    alignSelf:"center"
+    maxWidth: windowWidth < 380 ? 400 : 500,
+    width: "100%",
+    alignSelf: "center",
   },
   btnText: {
     textAlign: "center",

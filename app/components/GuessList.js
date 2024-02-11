@@ -27,9 +27,9 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 0 },
     shadowRadius: 5,
     shadowOpacity: 0.5,
-    marginVertical: 10,
-    width:"100%",
-    maxWidth:500,
-    alignSelf:'center'
+    marginVertical: windowWidth < 380 ? 8 : 10,
+    width: "100%",
+    maxWidth: 500,
+    alignSelf: "center",
   },
 });

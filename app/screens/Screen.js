@@ -34,5 +34,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: windowWidth < 380 ? 15 : 20,
+    paddingBottom:10
   },
 });
