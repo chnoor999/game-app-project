@@ -72,7 +72,6 @@ export default function GameStartScreen({ setUserNumber, userNumber }) {
       <ScrollView>
         <Screen>
           <Title>Guess My Number</Title>
-          <KeyboardAvoidingView behavior="position" >
             <Card>
               <View style={styles.cardContainer}>
                 <SubTitle>Enter a Number</SubTitle>
@@ -84,7 +83,6 @@ export default function GameStartScreen({ setUserNumber, userNumber }) {
                   value={userNumber}
                   onChangeText={(text) => setUserNumber(text)}
                   returnKeyType="done"
-                  disableFullscreenUI={true}
                 />
                 <View style={styles.btnsContainer}>
                   <View style={styles.btnContainer}>
@@ -96,7 +94,6 @@ export default function GameStartScreen({ setUserNumber, userNumber }) {
                 </View>
               </View>
             </Card>
-          </KeyboardAvoidingView>
         </Screen>
       </ScrollView>
     </BackgroundScreen>
