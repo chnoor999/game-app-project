@@ -8,8 +8,6 @@ import {
   View,
 } from "react-native";
 import { useEffect } from "react";
-//navigation
-import { useNavigation } from "@react-navigation/native";
 // screens
 import BackgroundScreen from "./BackgroundScreen";
 // constant color
@@ -20,8 +18,12 @@ import Title from "../components/Title";
 import SubTitle from "../components/SubTitle";
 import MyButton from "../components/MyButton";
 import Screen from "./Screen";
+// context
+import { useUserNumberContext } from "../store/userNumber-context";
 
-export default function GameStartScreen({ setUserNumber, userNumber }) {
+export default function GameStartScreen({navigation}) {
+  const { userNumber, setUserNumber } = useUserNumberContext();
+
   // prevent to going back
   useEffect(() => {
     const backAction = () => {
@@ -44,9 +46,6 @@ export default function GameStartScreen({ setUserNumber, userNumber }) {
     );
     return () => backHandler.remove();
   }, []);
-
-  // navigation
-  const navigation = useNavigation();
 
   // on reset function
   const onReset = () => {
@@ -72,28 +71,28 @@ export default function GameStartScreen({ setUserNumber, userNumber }) {
       <ScrollView>
         <Screen>
           <Title>Guess My Number</Title>
-            <Card>
-              <View style={styles.cardContainer}>
-                <SubTitle>Enter a Number</SubTitle>
-                <TextInput
-                  style={styles.input}
-                  keyboardType="numeric"
-                  maxLength={2}
-                  autoCapitalize="none"
-                  value={userNumber}
-                  onChangeText={(text) => setUserNumber(text)}
-                  returnKeyType="done"
-                />
-                <View style={styles.btnsContainer}>
-                  <View style={styles.btnContainer}>
-                    <MyButton onPress={onReset}>Reset</MyButton>
-                  </View>
-                  <View style={styles.btnContainer}>
-                    <MyButton onPress={onConfirm}>Confirm</MyButton>
-                  </View>
+          <Card>
+            <View style={styles.cardContainer}>
+              <SubTitle>Enter a Number</SubTitle>
+              <TextInput
+                style={styles.input}
+                keyboardType="numeric"
+                maxLength={2}
+                autoCapitalize="none"
+                value={userNumber}
+                onChangeText={(text) => setUserNumber(text)}
+                returnKeyType="done"
+              />
+              <View style={styles.btnsContainer}>
+                <View style={styles.btnContainer}>
+                  <MyButton onPress={onReset}>Reset</MyButton>
+                </View>
+                <View style={styles.btnContainer}>
+                  <MyButton onPress={onConfirm}>Confirm</MyButton>
                 </View>
               </View>
-            </Card>
+            </View>
+          </Card>
         </Screen>
       </ScrollView>
     </BackgroundScreen>
@@ -116,7 +115,7 @@ const styles = StyleSheet.create({
   },
   btnsContainer: {
     flexDirection: "row",
-    gap:10
+    gap: 10,
   },
   btnContainer: {
     flex: 1,

@@ -1,7 +1,5 @@
 import { Alert, BackHandler, FlatList, StyleSheet, View } from "react-native";
 import React, { useEffect, useState } from "react";
-//navigation
-import { useNavigation, useRoute } from "@react-navigation/native";
 // isons
 import { Ionicons } from "@expo/vector-icons";
 // screens
@@ -13,8 +11,11 @@ import MyButton from "../components/MyButton";
 import GuessedNumber from "../components/GuessedNumber";
 import GuessList from "../components/GuessList";
 import Screen from "./Screen";
+import { useUserNumberContext } from "../store/userNumber-context";
 
-export default function GameScreen({ setUserNumber }) {
+export default function GameScreen({ navigation, route }) {
+  const { setUserNumber } = useUserNumberContext();
+
   // prevent to going back give alert that you want to exit or restart
   useEffect(() => {
     const backAction = () => {
@@ -48,10 +49,6 @@ export default function GameScreen({ setUserNumber }) {
     );
     return () => backHandler.remove();
   }, []);
-
-  // navigation
-  const navigation = useNavigation();
-  const route = useRoute();
 
   // intial guesses number
   const [minGuess, setMinGuess] = useState(1);
@@ -171,7 +168,7 @@ const styles = StyleSheet.create({
   },
   btnsContainer: {
     flexDirection: "row",
-    gap:10
+    gap: 10,
   },
   btnContainer: {
     flex: 1,

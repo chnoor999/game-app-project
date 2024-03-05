@@ -5,8 +5,6 @@ import {
   View,
   useWindowDimensions,
 } from "react-native";
-//navigation
-import { useNavigation, useRoute } from "@react-navigation/native";
 // screens
 import BackgroundScreen from "./BackgroundScreen";
 import Title from "../components/Title";
@@ -14,14 +12,13 @@ import MyText from "../components/MyText";
 import MyBoldText from "../components/MyBoldText";
 import MyButton from "../components/MyButton";
 import Screen from "./Screen";
+import { useUserNumberContext } from "../store/userNumber-context";
 
 // width of mobile window
 const windowWidth = Dimensions.get("window").width;
 
-export default function GameOverScreen({ setUserNumber }) {
-  // navigation
-  const navigation = useNavigation();
-  const route = useRoute();
+export default function GameOverScreen({ navigation, route }) {
+  const { setUserNumber } = useUserNumberContext();
 
   const { userGuess } = route.params;
   const { totalGuessLength } = route.params;

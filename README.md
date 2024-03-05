@@ -1,6 +1,6 @@
 Three Screens with Stack Navigation:
 The app consists of three screens: GameStartScreen, GameScreen, and GameOverScreen.
-Navigation between these screens is managed using stack navigation.
+Navigation between these screens is managed using native stack navigation.
 
 GameStartScreen:
 On this screen, the player guesses a number between 1 to 99.
@@ -30,3 +30,6 @@ When the game starts, the alert changes to confirm if the user wants to exit the
 Responsiveness:
 Different styles are applied for large and small mobile screens.
 Different styling is applied for landscape and portrait modes.
+
+State Management
+App state is managed by context api
