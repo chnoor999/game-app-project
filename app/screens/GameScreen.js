@@ -1,8 +1,12 @@
 import { Alert, BackHandler, FlatList, StyleSheet, View } from "react-native";
-import React, { useEffect, useState } from "react";
-// isons
+import { memo, useEffect, useMemo, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
-// screens
+import { useUserNumberContext } from "../store/userNumber-context";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
+
 import BackgroundScreen from "./BackgroundScreen";
 import Title from "../components/Title";
 import Card from "../components/Card";
@@ -10,11 +14,9 @@ import SubTitle from "../components/SubTitle";
 import MyButton from "../components/MyButton";
 import GuessedNumber from "../components/GuessedNumber";
 import GuessList from "../components/GuessList";
-import Screen from "./Screen";
-import { useUserNumberContext } from "../store/userNumber-context";
 
-export default function GameScreen({ navigation, route }) {
-  const { setUserNumber } = useUserNumberContext();
+const GameScreen = ({ navigation }) => {
+  const { userNumber, resetUserNumber } = useUserNumberContext();
 
   // prevent to going back give alert that you want to exit or restart
   useEffect(() => {
@@ -29,14 +31,14 @@ export default function GameScreen({ navigation, route }) {
             onPress: () => {
               BackHandler.exitApp();
               navigation.navigate("gameStartScreen");
-              setUserNumber(null);
+              resetUserNumber();
             },
           },
           {
             text: "Restart",
             onPress: () => {
               navigation.navigate("gameStartScreen");
-              setUserNumber(null);
+              resetUserNumber();
             },
           },
         ]
@@ -50,7 +52,7 @@ export default function GameScreen({ navigation, route }) {
     return () => backHandler.remove();
   }, []);
 
-  // intial guesses number
+  // initial guesses number
   const [minGuess, setMinGuess] = useState(1);
   const [maxGuess, setMaxGuess] = useState(99);
 
@@ -63,26 +65,25 @@ export default function GameScreen({ navigation, route }) {
       return num;
     }
   };
-  // user guess
-  const userGuess = route.params.userNumber;
+
   // initial guess
-  const intialguess = guessRndNumber(minGuess, maxGuess, userGuess);
+  const intialGuess = guessRndNumber(minGuess, maxGuess, userNumber);
   // guess number state
-  const [guessedNumber, setGuessedNumber] = useState(intialguess);
+  const [guessedNumber, setGuessedNumber] = useState(intialGuess);
   // total guess
   const [totalGuess, setTotalGuess] = useState([guessedNumber]);
   //length of total guess
-  const totalGuessLength = totalGuess.length;
+  const totalGuessLength = useMemo(() => totalGuess.length, [totalGuess]);
 
   // function for button to guess a number high or low
-  const onGuess = (whichguess) => {
-    if (userGuess == guessedNumber) {
+  const onGuess = (whichGuess) => {
+    if (userNumber == guessedNumber) {
       return;
     }
-    //whichguess is high or low
+    //whichGuess is high or low
     if (
-      (whichguess === "low" && guessedNumber < userGuess) ||
-      (whichguess === "high" && guessedNumber > userGuess)
+      (whichGuess === "low" && guessedNumber < userNumber) ||
+      (whichGuess === "high" && guessedNumber > userNumber)
     ) {
       Alert.alert("Don't lie!", "You know this is wrong...", [
         {
@@ -93,17 +94,17 @@ export default function GameScreen({ navigation, route }) {
       return;
     }
     //condition for low
-    else if (whichguess === "low") {
+    else if (whichGuess === "low") {
       setMaxGuess(guessedNumber - 1);
     }
     // condition for high
-    else if (whichguess === "high") {
+    else if (whichGuess === "high") {
       setMinGuess(guessedNumber + 1);
     }
   };
 
   useEffect(() => {
-    // this condition do not change the intial guess on first render
+    // this condition do not change the initial guess on first render
     if (minGuess != 1 || maxGuess != 99) {
       const rndNumber = guessRndNumber(minGuess, maxGuess, guessedNumber);
       setGuessedNumber(rndNumber);
@@ -111,69 +112,54 @@ export default function GameScreen({ navigation, route }) {
     }
   }, [minGuess, maxGuess]);
 
-  // game over stuff
+  // game over
   useEffect(() => {
-    if (userGuess == guessedNumber) {
+    if (userNumber == guessedNumber) {
       navigation.navigate("gameOverScreen", {
-        userGuess,
+        userNumber,
         totalGuessLength,
       });
     }
   }, [guessedNumber]);
   return (
     <BackgroundScreen>
-      <Screen>
-        <Title>Opponent's Guess</Title>
-        <Card>
-          <View style={styles.cardContainer}>
-            <SubTitle>Higher or lower?</SubTitle>
-            <GuessedNumber>{guessedNumber}</GuessedNumber>
-            <View style={styles.btnsContainer}>
-              <View style={styles.btnContainer}>
-                <MyButton onPress={() => onGuess("low")}>
-                  <Ionicons name="remove" size={18} color="#fff" />
-                </MyButton>
-              </View>
-              <View style={styles.btnContainer}>
-                <MyButton onPress={() => onGuess("high")}>
-                  <Ionicons name="add" size={18} color="#fff" />
-                </MyButton>
-              </View>
-            </View>
+      <Title>Opponent's Guess</Title>
+      <Card>
+        <SubTitle>Higher or lower?</SubTitle>
+        <GuessedNumber>{guessedNumber}</GuessedNumber>
+        <View style={styles.btnsContainer}>
+          <View style={styles.btnContainer}>
+            <MyButton onPress={() => onGuess("low")}>
+              <Ionicons name="remove" size={hp(2.4)} color="#fff" />
+            </MyButton>
           </View>
-        </Card>
-        <View style={styles.listContainer}>
-          <FlatList
-            data={totalGuess}
-            renderItem={({ item, index }) => {
-              return (
-                <GuessList
-                  ListGuess={item}
-                  listNumber={totalGuessLength - index}
-                />
-              );
-            }}
-          />
+          <View style={styles.btnContainer}>
+            <MyButton onPress={() => onGuess("high")}>
+              <Ionicons name="add" size={hp(2)} color="#fff" />
+            </MyButton>
+          </View>
         </View>
-      </Screen>
+      </Card>
+      <FlatList
+        data={totalGuess}
+        renderItem={({ item, index }) => {
+          return (
+            <GuessList ListGuess={item} listNumber={totalGuessLength - index} />
+          );
+        }}
+      />
     </BackgroundScreen>
   );
-}
+};
+
+export default memo(GameScreen);
 
 const styles = StyleSheet.create({
-  cardContainer: {
-    gap: 10,
-    alignItems: "center",
-    justifyContent: "center",
-  },
   btnsContainer: {
     flexDirection: "row",
-    gap: 10,
+    gap: wp(4),
   },
   btnContainer: {
-    flex: 1,
-  },
-  listContainer: {
     flex: 1,
   },
 });

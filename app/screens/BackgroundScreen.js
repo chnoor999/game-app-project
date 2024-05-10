@@ -1,12 +1,15 @@
 import { ImageBackground, View } from "react-native";
-// expo linear gradiant
+import { memo } from "react";
 import { LinearGradient } from "expo-linear-gradient";
-// constant colors
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
+
 import Colors from "../config/Colors";
-// expo constant
 import Constants from "expo-constants";
 
-export default function BackgroundScreen({ children }) {
+const BackgroundScreen = ({ children }) => {
   return (
     <LinearGradient
       colors={[Colors.blue500, Colors.yellow500]}
@@ -17,10 +20,19 @@ export default function BackgroundScreen({ children }) {
         style={{ flex: 1 }}
         imageStyle={{ opacity: 0.1 }}
       >
-        <View style={{ paddingTop: Constants.statusBarHeight ,flex:1 }}>
+        <View
+          style={{
+            paddingTop: Constants.statusBarHeight + hp(3),
+            flex: 1,
+            gap: hp(3),
+            paddingHorizontal: wp(4),
+          }}
+        >
           {children}
         </View>
       </ImageBackground>
     </LinearGradient>
   );
-}
+};
+
+export default memo(BackgroundScreen);

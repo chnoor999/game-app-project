@@ -19,8 +19,8 @@ export default function Screen({ children, style }) {
         {
           paddingTop:
             windowWidth < 380 ? (width > 500 ? 10 : 15) : width > 500 ? 10 : 35,
-          gap:
-            windowWidth < 380 ? (width > 500 ? 10 : 20) : width > 500 ? 15 : 35,
+          // gap:
+          //   windowWidth < 380 ? (width > 500 ? 10 : 20) : width > 500 ? 15 : 35,
         },
         style,
       ]}
@@ -34,6 +34,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: windowWidth < 380 ? 15 : 20,
-    paddingBottom:10
+    paddingBottom: 10,
   },
 });

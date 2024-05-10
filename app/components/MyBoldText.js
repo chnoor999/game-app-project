@@ -1,5 +1,5 @@
 import { StyleSheet, Text } from "react-native";
-// constant colors
+
 import Colors from "../config/Colors";
 
 export default function MyBoldText({ children }) {

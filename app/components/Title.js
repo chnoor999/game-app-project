@@ -1,29 +1,33 @@
-import { Dimensions, StyleSheet, Text, View } from "react-native";
-// constant color
+import { StyleSheet, Text, View } from "react-native";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
+import { memo } from "react";
+
 import Colors from "../config/Colors";
 
-export default function Title({ children }) {
+const Title = ({ children }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>{children}</Text>
     </View>
   );
-}
+};
 
-// width of mobile window 
-const windowWidth = Dimensions.get("window").width;
+export default memo(Title);
 
 const styles = StyleSheet.create({
   container: {
     borderWidth: 2,
-    paddingHorizontal: 10,
-    paddingVertical: 5,
     borderColor: Colors.white500,
+    paddingHorizontal: wp(2),
+    paddingVertical: hp(0.8),
   },
   text: {
-    fontSize: windowWidth<380?22:26,
     textAlign: "center",
     fontFamily: "openSans-Bold",
     color: Colors.white500,
+    fontSize: hp(3),
   },
 });

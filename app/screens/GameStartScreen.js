@@ -1,28 +1,22 @@
+import { Alert, BackHandler, StyleSheet, TextInput, View } from "react-native";
+import { useCallback, useEffect } from "react";
+import { useUserNumberContext } from "../store/userNumber-context";
 import {
-  Alert,
-  BackHandler,
-  KeyboardAvoidingView,
-  ScrollView,
-  StyleSheet,
-  TextInput,
-  View,
-} from "react-native";
-import { useEffect } from "react";
-// screens
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
+import { debounce } from "lodash";
+
 import BackgroundScreen from "./BackgroundScreen";
-// constant color
 import Colors from "../config/Colors";
-// components
 import Card from "../components/Card";
 import Title from "../components/Title";
 import SubTitle from "../components/SubTitle";
 import MyButton from "../components/MyButton";
-import Screen from "./Screen";
-// context
-import { useUserNumberContext } from "../store/userNumber-context";
 
-export default function GameStartScreen({navigation}) {
-  const { userNumber, setUserNumber } = useUserNumberContext();
+const GameStartScreen = ({ navigation }) => {
+  const { userNumber, setUserNumber, inpRef, resetUserNumber } =
+    useUserNumberContext();
 
   // prevent to going back
   useEffect(() => {
@@ -47,13 +41,11 @@ export default function GameStartScreen({navigation}) {
     return () => backHandler.remove();
   }, []);
 
-  // on reset function
-  const onReset = () => {
-    setUserNumber(null);
-  };
+  const onResetHandler = useCallback(() => {
+    resetUserNumber();
+  }, []);
 
-  // on confirm function
-  const onConfirm = () => {
+  const onConfirmHandler = useCallback(() => {
     const num = parseInt(userNumber);
     if (isNaN(num) || num <= 0 || num > 99) {
       Alert.alert(
@@ -64,58 +56,56 @@ export default function GameStartScreen({navigation}) {
     } else {
       navigation.navigate("gameScreen", { userNumber });
     }
-  };
+  }, [userNumber]);
+
+  const userNumberChangeHandler = useCallback(
+    debounce((txt) => {
+      setUserNumber(txt);
+    }, 100),
+    []
+  );
 
   return (
     <BackgroundScreen>
-      <ScrollView>
-        <Screen>
-          <Title>Guess My Number</Title>
-          <Card>
-            <View style={styles.cardContainer}>
-              <SubTitle>Enter a Number</SubTitle>
-              <TextInput
-                style={styles.input}
-                keyboardType="numeric"
-                maxLength={2}
-                autoCapitalize="none"
-                value={userNumber}
-                onChangeText={(text) => setUserNumber(text)}
-                returnKeyType="done"
-              />
-              <View style={styles.btnsContainer}>
-                <View style={styles.btnContainer}>
-                  <MyButton onPress={onReset}>Reset</MyButton>
-                </View>
-                <View style={styles.btnContainer}>
-                  <MyButton onPress={onConfirm}>Confirm</MyButton>
-                </View>
-              </View>
-            </View>
-          </Card>
-        </Screen>
-      </ScrollView>
+      <Title>Guess My Number</Title>
+      <Card>
+        <SubTitle>Enter a Number</SubTitle>
+        <TextInput
+          style={styles.input}
+          keyboardType="numeric"
+          maxLength={2}
+          autoCapitalize="none"
+          onChangeText={(txt) => userNumberChangeHandler(txt)}
+          returnKeyType="done"
+          ref={inpRef}
+        />
+        <View style={styles.btnsContainer}>
+          <View style={styles.btnContainer}>
+            <MyButton onPress={onResetHandler}>Reset</MyButton>
+          </View>
+          <View style={styles.btnContainer}>
+            <MyButton onPress={onConfirmHandler}>Confirm</MyButton>
+          </View>
+        </View>
+      </Card>
     </BackgroundScreen>
   );
-}
+};
+
+export default GameStartScreen;
 
 const styles = StyleSheet.create({
-  cardContainer: {
-    gap: 10,
-    alignItems: "center",
-    justifyContent: "center",
-  },
   input: {
     borderWidth: 2,
     borderColor: Colors.yellow500,
-    fontSize: 30,
+    fontSize: hp(3.5),
     color: Colors.yellow500,
     textAlign: "center",
-    width: 80,
+    width: wp(20),
   },
   btnsContainer: {
     flexDirection: "row",
-    gap: 10,
+    gap: wp(4),
   },
   btnContainer: {
     flex: 1,

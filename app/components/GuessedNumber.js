@@ -1,26 +1,33 @@
 import { StyleSheet, Text, View } from "react-native";
-// constant colors
+import { memo } from "react";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
+
 import Colors from "../config/Colors";
 
-export default function GuessedNumber({ children }) {
+const GuessedNumber = ({ children }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>{children}</Text>
     </View>
   );
-}
+};
+
+export default memo(GuessedNumber);
 
 const styles = StyleSheet.create({
   container: {
     borderWidth: 2,
     borderColor: Colors.yellow500,
-    width: 80,
+    width: wp(20),
+    alignItems: "center",
+    justifyContent: "center",
   },
   text: {
     color: Colors.yellow500,
-    fontSize: 28,
     textAlign: "center",
-    paddingVertical: 5,
-    paddingHorizontal: 10,
+    fontSize: hp(3.5),
   },
 });
