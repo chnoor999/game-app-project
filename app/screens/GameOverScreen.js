@@ -15,7 +15,6 @@ export default function GameOverScreen({ navigation, route }) {
   const { userNumber } = route.params;
   const { totalGuessLength } = route.params;
 
-  // re start game function
   const handleRestartGame = useCallback(() => {
     navigation.navigate("gameStartScreen");
     resetUserNumber();
